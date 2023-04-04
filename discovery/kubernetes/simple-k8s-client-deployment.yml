@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-k8s-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: simple-k8s-client
+  template:
+    metadata:
+      # labels to select/identify the deployment
+      labels:
+        io.kompose.service: simple-k8s-client
+    spec:
+      containers:
+      - name: simple-k8s-client
+        image: "vkraken/simple-k8s-client:1.0.0"
+        env:
+        - name: SERVICE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: simple-k8s-config
+              key: service.url
